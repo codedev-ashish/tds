@@ -9,3 +9,18 @@ directory = "./dist"
 binding = "DB"
 database_name = "tds_pro_db"
 database_id = "403ece79-b25b-4984-9122-52918f2bda65"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
