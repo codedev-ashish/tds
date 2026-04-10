@@ -1,4 +1,4 @@
-name = "tds-pro-assistant"
+name = "tds"
 compatibility_date = "2026-04-10"
 
 # This tells Cloudflare where your built website files are
