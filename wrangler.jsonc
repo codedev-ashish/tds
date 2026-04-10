@@ -1,0 +1,10 @@
+{
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "tds_pro_db",
+			"database_id": "403ece79-b25b-4984-9122-52918f2bda65",
+			"remote": true
+		}
+	]
+}

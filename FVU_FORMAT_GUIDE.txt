@@ -1,0 +1,611 @@
+THIS IS DEMO FORMAT & STRUCTURE GENERATED FROM OFFLINE UTILITY
+ 
+1^FH^NS1^R^28012026^1^D^ALDD03200B^1^Protean RPU 5.8^^^^^^^^
+2^BH^1^3^26Q^^^^770000348396204^^^^ALDD03200B^^ARPPJ1400R^202627^202526^Q3^DEEPAK KUMAR JAISWAL^N/A^1^EKAWASPATTI^BHITARI BO^BHITARI TARAF SADUR^GHAZIPUR^31^233304^SHIVAMJAISWAL1010@GMAIL.COM^^^N^Q^DEEPAK KUMAR JAISWAL^PROPRIETOR^1^EKAWASPATTI^BHITARI BO^BHITARI TARAF SADUR^GHAZIPUR^31^233304^SHIVAMJAISWAL1010@GMAIL.COM^7754893600^^^N^24288.00^^^^N^Y^^^^^^^ARPPJ1400R^^^^^^^^^^^^^
+3^CD^1^1^1^N^^^^^^08010^^^^0180002^^08112025^^^^10096.00^0.00^0.00^303.00^0.00^10399.00^^10096.00^10096.00^0.00^0.00^10096.00^303.00^0.00^^N^^0.00^200^
+4^DD^1^1^1^O^^2^^AXFPJ5192A^^^ASHISH KUMAR JAISWAL^10096.00^0.00^0.00^10096.00^^10096.00^^^10096000.00^28102025^28102025^^0.1000^^^^^^^94Q^^^^^^^^^^^^^^^^^^^^^
+5^CD^1^2^1^N^^^^^^17579^^^^0180002^^07122025^^^^9139.00^0.00^0.00^0.00^0.00^9139.00^^9139.00^9139.00^0.00^0.00^9139.00^0.00^0.00^^N^^0.00^200^
+6^DD^1^2^1^O^^2^^AXFPJ5192A^^^ASHISH KUMAR JAISWAL^9139.00^0.00^0.00^9139.00^^9139.00^^^9139000.00^28112025^28112025^^0.1000^^^^^^^94Q^^^^^^^^^^^^^^^^^^^^^
+7^CD^1^3^1^N^^^^^^58380^^^^0180002^^07012026^^^^4750.00^0.00^0.00^0.00^0.00^4750.00^^4750.00^4750.00^0.00^0.00^4750.00^0.00^0.00^^N^^0.00^200^
+8^DD^1^3^1^O^^2^^AXFPJ5192A^^^ASHISH KUMAR JAISWAL^4750.00^0.00^0.00^4750.00^^4750.00^^^4750000.00^31122025^31122025^^0.1000^^^^^^^94Q^^^^^^^^^^^^^^^^^^^^^
+DESCRIBE THE DETAILS, TABLE NAME & ATTRIBUTES FOR DATA FILL
+
+
+
+Based on the demo format you've shared, here's a detailed breakdown of the structure, tables, and attributes needed:
+
+## File Structure Analysis
+
+This is a **Form 26Q** (Non-Salary TDS) file with the following record types:
+
+### Record Type Breakdown
+
+| Line | Record Type | Description |
+|------|-------------|-------------|
+| 1 | FH | File Header |
+| 2 | BH | Batch Header (Deductor Details) |
+| 3, 5, 7 | CD | Challan Detail |
+| 4, 6, 8 | DD | Deductee Detail |
+
+---
+
+## Detailed Field Mapping
+
+### 1. FILE HEADER (FH) - Line 1
+
+```
+1^FH^NS1^R^28012026^1^D^ALDD03200B^1^Protean RPU 5.8^^^^^^^^
+```
+
+**Table:** `file_headers`
+
+| Position | Field Name | Value | Description | DB Column |
+|----------|-----------|-------|-------------|-----------|
+| 1 | Line Number | 1 | Sequential line number | `line_number` |
+| 2 | Record Type | FH | File Header identifier | `record_type` |
+| 3 | FVU Version | NS1 | File validation version | `fvu_version` |
+| 4 | Return Type | R | R=Regular, C=Correction | `return_type` |
+| 5 | File Creation Date | 28012026 | ddmmyyyy format | `file_creation_date` |
+| 6 | File Number | 1 | Sequential file number | `file_number` |
+| 7 | Deductor Type | D | D=Deductor, C=Collector | `deductor_type` |
+| 8 | TAN | ALDD03200B | Tax Deduction Account Number | `tan` |
+| 9 | Total Batches | 1 | Number of batches in file | `total_batches` |
+| 10 | Software Name | Protean RPU 5.8 | Generation software | `software_name` |
+| 11-18 | Reserved | ^ | Future use | - |
+
+**SQL Schema:**
+```sql
+CREATE TABLE file_headers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    line_number INT NOT NULL,
+    record_type VARCHAR(2) DEFAULT 'FH',
+    fvu_version VARCHAR(10),
+    return_type ENUM('R', 'C') NOT NULL,
+    file_creation_date DATE NOT NULL,
+    file_number INT,
+    deductor_type ENUM('D', 'C') DEFAULT 'D',
+    tan VARCHAR(10) NOT NULL,
+    total_batches INT DEFAULT 1,
+    software_name VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### 2. BATCH HEADER (BH) - Line 2
+
+```
+2^BH^1^3^26Q^^^^770000348396204^^^^ALDD03200B^^ARPPJ1400R^202627^202526^Q3^DEEPAK KUMAR JAISWAL^N/A^1^EKAWASPATTI^BHITARI BO^BHITARI TARAF SADUR^GHAZIPUR^31^233304^SHIVAMJAISWAL1010@GMAIL.COM^^^N^Q^DEEPAK KUMAR JAISWAL^PROPRIETOR^1^EKAWASPATTI^BHITARI BO^BHITARI TARAF SADUR^GHAZIPUR^31^233304^SHIVAMJAISWAL1010@GMAIL.COM^7754893600^^^N^24288.00^^^^N^Y^^^^^^^ARPPJ1400R^^^^^^^^^^^^^
+```
+
+**Table:** `batch_headers`
+
+| Position | Field | Value | Description | DB Column |
+|----------|-------|-------|-------------|-----------|
+| 1 | Line Number | 2 | - | `line_number` |
+| 2 | Record Type | BH | - | `record_type` |
+| 3 | Batch Number | 1 | - | `batch_number` |
+| 4 | Serial Number | 3 | - | `serial_number` |
+| 5 | Form Type | 26Q | 24Q/26Q/27Q/27EQ | `form_type` |
+| 6-9 | Reserved | ^ | - | - |
+| 10 | PAN Reference | 770000348396204 | - | `pan_reference_number` |
+| 11-14 | Reserved | ^ | - | - |
+| 15 | TAN | ALDD03200B | - | `tan` |
+| 16 | Reserved | ^ | - | - |
+| 17 | PAN of Deductor | ARPPJ1400R | - | `deductor_pan` |
+| 18 | Assessment Year | 202627 | 2026-27 | `assessment_year` |
+| 19 | Financial Year | 202526 | 2025-26 | `financial_year` |
+| 20 | Quarter | Q3 | Q1/Q2/Q3/Q4 | `quarter` |
+| 21 | Deductor Name | DEEPAK KUMAR JAISWAL | - | `deductor_name` |
+| 22 | Branch/Division | N/A | - | `branch_division` |
+| 23 | Flat/Door/Block | 1 | - | `flat_door_block` |
+| 24 | Name of Premises | EKAWASPATTI | - | `name_of_premises` |
+| 25 | Road/Street | BHITARI BO | - | `road_street` |
+| 26 | Area/Locality | BHITARI TARAF SADUR | - | `area_locality` |
+| 27 | Town/City | GHAZIPUR | - | `town_city` |
+| 28 | State Code | 31 | Uttar Pradesh | `state_code` |
+| 29 | PIN Code | 233304 | - | `pin_code` |
+| 30 | Email | SHIVAMJAISWAL1010@GMAIL.COM | - | `email` |
+| 31-33 | Reserved | ^ | - | - |
+| 34 | STD Code | N | - | `std_code` |
+| 35 | Responsible Person Type | Q | - | `responsible_person_type` |
+| 36 | Responsible Person Name | DEEPAK KUMAR JAISWAL | - | `responsible_person_name` |
+| 37 | Designation | PROPRIETOR | - | `designation` |
+| 38-42 | Responsible Person Address | (Same as deductor) | - | `rp_flat_door_block`, etc. |
+| 43 | RP Email | SHIVAMJAISWAL1010@GMAIL.COM | - | `rp_email` |
+| 44 | RP Mobile | 7754893600 | - | `rp_mobile` |
+| 45-47 | Reserved | ^ | - | - |
+| 48 | Declaration | N | - | `declaration` |
+| 49 | Total Amount Paid | 24288.00 | - | `total_amount_paid` |
+| 50-53 | Reserved | ^ | - | - |
+| 54 | Nil Challan | N | - | `nil_challan_indicator` |
+| 55 | Last Return | Y | - | `last_return_filed` |
+| 56-62 | Reserved | ^ | - | - |
+| 63 | PAN | ARPPJ1400R | - | `pan` |
+| 64-76 | Reserved | ^ | - | - |
+
+**SQL Schema:**
+```sql
+CREATE TABLE batch_headers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    line_number INT NOT NULL,
+    record_type VARCHAR(2) DEFAULT 'BH',
+    batch_number INT NOT NULL,
+    serial_number INT,
+    form_type ENUM('24Q', '26Q', '27Q', '27EQ') NOT NULL,
+    pan_reference_number VARCHAR(20),
+    tan VARCHAR(10) NOT NULL,
+    deductor_pan VARCHAR(10),
+    assessment_year VARCHAR(6),
+    financial_year VARCHAR(6),
+    quarter ENUM('Q1', 'Q2', 'Q3', 'Q4') NOT NULL,
+    
+    -- Deductor Details
+    deductor_name VARCHAR(200) NOT NULL,
+    branch_division VARCHAR(100),
+    flat_door_block VARCHAR(50),
+    name_of_premises VARCHAR(100),
+    road_street VARCHAR(100),
+    area_locality VARCHAR(100),
+    town_city VARCHAR(50),
+    state_code VARCHAR(2),
+    pin_code VARCHAR(6),
+    email VARCHAR(100),
+    std_code VARCHAR(10),
+    
+    -- Responsible Person
+    responsible_person_type VARCHAR(1),
+    responsible_person_name VARCHAR(200),
+    designation VARCHAR(100),
+    rp_flat_door_block VARCHAR(50),
+    rp_name_of_premises VARCHAR(100),
+    rp_road_street VARCHAR(100),
+    rp_area_locality VARCHAR(100),
+    rp_town_city VARCHAR(50),
+    rp_state_code VARCHAR(2),
+    rp_pin_code VARCHAR(6),
+    rp_email VARCHAR(100),
+    rp_mobile VARCHAR(10),
+    
+    -- Other Details
+    declaration VARCHAR(1),
+    total_amount_paid DECIMAL(15, 2),
+    nil_challan_indicator VARCHAR(1),
+    last_return_filed VARCHAR(1),
+    pan VARCHAR(10),
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### 3. CHALLAN DETAIL (CD) - Lines 3, 5, 7
+
+```
+3^CD^1^1^1^N^^^^^^08010^^^^0180002^^08112025^^^^10096.00^0.00^0.00^303.00^0.00^10399.00^^10096.00^10096.00^0.00^0.00^10096.00^303.00^0.00^^N^^0.00^200^
+```
+
+**Table:** `challan_details`
+
+| Position | Field | Example Value | Description | DB Column |
+|----------|-------|---------------|-------------|-----------|
+| 1 | Line Number | 3 | - | `line_number` |
+| 2 | Record Type | CD | Challan Detail | `record_type` |
+| 3 | Batch Number | 1 | - | `batch_number` |
+| 4 | Challan Serial | 1 | - | `challan_serial_number` |
+| 5 | Section Serial | 1 | - | `section_serial_number` |
+| 6 | Nil Challan | N | Y/N | `nil_challan` |
+| 7-12 | Reserved | ^ | - | - |
+| 13 | BSR Code (Old) | 08010 | Bank branch code | `bsr_code_old` |
+| 14-17 | Reserved | ^ | - | - |
+| 18 | BSR Code (New) | 0180002 | 7-digit BSR | `bsr_code` |
+| 19 | Reserved | ^ | - | - |
+| 20 | Challan Date | 08112025 | ddmmyyyy | `challan_date` |
+| 21-24 | Reserved | ^ | - | - |
+| 25 | Tax Deposited | 10096.00 | Amount | `tax_deposited` |
+| 26 | Surcharge | 0.00 | - | `surcharge` |
+| 27 | Education Cess | 0.00 | - | `education_cess` |
+| 28 | Interest | 303.00 | Late payment interest | `interest` |
+| 29 | Others | 0.00 | Other charges | `others` |
+| 30 | Total | 10399.00 | Total amount | `total_amount` |
+| 31 | Reserved | ^ | - | - |
+| 32 | Income Tax | 10096.00 | - | `income_tax` |
+| 33 | Surcharge (dup) | 10096.00 | - | - |
+| 34 | Education Cess (dup) | 0.00 | - | - |
+| 35 | Others (dup) | 0.00 | - | - |
+| 36 | Tax Deposited (dup) | 10096.00 | - | - |
+| 37 | Interest (dup) | 303.00 | - | - |
+| 38 | Fee | 0.00 | - | `fee` |
+| 39-40 | Reserved | ^ | - | - |
+| 41 | Minor Head | N | - | `minor_head` |
+| 42-43 | Reserved | ^ | - | - |
+| 44 | Tender Date | 0.00 | - | `tender_date` |
+| 45 | Nature of Payment | 200 | Section code | `nature_of_payment` |
+| 46 | Reserved | ^ | - | - |
+
+**SQL Schema:**
+```sql
+CREATE TABLE challan_details (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    batch_header_id INT NOT NULL,
+    line_number INT NOT NULL,
+    record_type VARCHAR(2) DEFAULT 'CD',
+    batch_number INT NOT NULL,
+    challan_serial_number INT NOT NULL,
+    section_serial_number INT,
+    nil_challan ENUM('Y', 'N') DEFAULT 'N',
+    
+    -- BSR Details
+    bsr_code_old VARCHAR(5),
+    bsr_code VARCHAR(7) NOT NULL,
+    challan_date DATE NOT NULL,
+    
+    -- Amount Details
+    tax_deposited DECIMAL(15, 2) NOT NULL,
+    surcharge DECIMAL(15, 2) DEFAULT 0.00,
+    education_cess DECIMAL(15, 2) DEFAULT 0.00,
+    interest DECIMAL(15, 2) DEFAULT 0.00,
+    others DECIMAL(15, 2) DEFAULT 0.00,
+    total_amount DECIMAL(15, 2) NOT NULL,
+    income_tax DECIMAL(15, 2),
+    fee DECIMAL(15, 2) DEFAULT 0.00,
+    
+    -- Other Details
+    minor_head VARCHAR(1),
+    tender_date DATE,
+    nature_of_payment VARCHAR(10),
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (batch_header_id) REFERENCES batch_headers(id)
+);
+```
+
+---
+
+### 4. DEDUCTEE DETAIL (DD) - Lines 4, 6, 8
+
+```
+4^DD^1^1^1^O^^2^^AXFPJ5192A^^^ASHISH KUMAR JAISWAL^10096.00^0.00^0.00^10096.00^^10096.00^^^10096000.00^28102025^28102025^^0.1000^^^^^^^94Q^^^^^^^^^^^^^^^^^^^^^
+```
+
+**Table:** `deductee_details`
+
+| Position | Field | Example Value | Description | DB Column |
+|----------|-------|---------------|-------------|-----------|
+| 1 | Line Number | 4 | - | `line_number` |
+| 2 | Record Type | DD | Deductee Detail | `record_type` |
+| 3 | Batch Number | 1 | - | `batch_number` |
+| 4 | Challan Serial | 1 | Links to CD | `challan_serial_number` |
+| 5 | Deductee Serial | 1 | - | `deductee_serial_number` |
+| 6 | Deductee Status | O | O=Original, A=Amended | `deductee_status` |
+| 7 | Reserved | ^ | - | - |
+| 8 | Buyer/Tenant/Transferee | 2 | - | `buyer_seller_flag` |
+| 9 | Reserved | ^ | - | - |
+| 10 | PAN | AXFPJ5192A | Deductee PAN | `deductee_pan` |
+| 11-13 | Reserved | ^ | - | - |
+| 14 | Deductee Name | ASHISH KUMAR JAISWAL | - | `deductee_name` |
+| 15 | Amount Paid | 10096.00 | Gross amount | `amount_paid` |
+| 16 | Amount Credited | 0.00 | - | `amount_credited` |
+| 17 | TDS | 0.00 | - | `tds_deducted` |
+| 18 | Total | 10096.00 | - | `total_amount` |
+| 19 | Reserved | ^ | - | - |
+| 20 | TDS Deposited | 10096.00 | Actually deposited | `tds_deposited` |
+| 21-23 | Reserved | ^ | - | - |
+| 24 | Amount Paid/Credited | 10096000.00 | In paisa (×100) | `amount_paid_credited_paisa` |
+| 25 | Payment Date | 28102025 | ddmmyyyy | `date_of_payment` |
+| 26 | Deduction Date | 28102025 | ddmmyyyy | `date_of_deduction` |
+| 27 | Reserved | ^ | - | - |
+| 28 | TDS Rate | 0.1000 | 0.10% rate | `tds_rate` |
+| 29-35 | Reserved | ^ | - | - |
+| 36 | Section Code | 94Q | TDS section | `section_code` |
+| 37-59 | Reserved | ^ | - | - |
+
+**SQL Schema:**
+```sql
+CREATE TABLE deductee_details (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    challan_detail_id INT NOT NULL,
+    batch_header_id INT NOT NULL,
+    line_number INT NOT NULL,
+    record_type VARCHAR(2) DEFAULT 'DD',
+    batch_number INT NOT NULL,
+    challan_serial_number INT NOT NULL,
+    deductee_serial_number INT NOT NULL,
+    deductee_status ENUM('O', 'A') DEFAULT 'O',
+    buyer_seller_flag VARCHAR(1),
+    
+    -- Deductee Information
+    deductee_pan VARCHAR(10),
+    deductee_name VARCHAR(200) NOT NULL,
+    
+    -- Amount Details
+    amount_paid DECIMAL(15, 2) NOT NULL,
+    amount_credited DECIMAL(15, 2) DEFAULT 0.00,
+    tds_deducted DECIMAL(15, 2) NOT NULL,
+    total_amount DECIMAL(15, 2) NOT NULL,
+    tds_deposited DECIMAL(15, 2) NOT NULL,
+    amount_paid_credited_paisa BIGINT,
+    
+    -- Dates
+    date_of_payment DATE NOT NULL,
+    date_of_deduction DATE NOT NULL,
+    
+    -- TDS Details
+    tds_rate DECIMAL(10, 4),
+    section_code VARCHAR(10) NOT NULL,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (challan_detail_id) REFERENCES challan_details(id),
+    FOREIGN KEY (batch_header_id) REFERENCES batch_headers(id)
+);
+```
+
+---
+
+## Complete Database Schema with Relationships
+
+```sql
+-- Main transaction table linking everything
+CREATE TABLE tds_returns (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    return_id VARCHAR(50) UNIQUE NOT NULL,
+    file_header_id INT,
+    batch_header_id INT,
+    tan VARCHAR(10) NOT NULL,
+    financial_year VARCHAR(6) NOT NULL,
+    quarter ENUM('Q1', 'Q2', 'Q3', 'Q4') NOT NULL,
+    form_type ENUM('24Q', '26Q', '27Q', '27EQ') NOT NULL,
+    status ENUM('draft', 'generated', 'validated', 'submitted') DEFAULT 'draft',
+    generated_file_path VARCHAR(255),
+    fvu_file_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (file_header_id) REFERENCES file_headers(id),
+    FOREIGN KEY (batch_header_id) REFERENCES batch_headers(id),
+    INDEX idx_tan_fy_qtr (tan, financial_year, quarter)
+);
+
+-- State codes reference
+CREATE TABLE state_codes (
+    code VARCHAR(2) PRIMARY KEY,
+    state_name VARCHAR(100) NOT NULL,
+    state_name_hindi VARCHAR(100)
+);
+
+-- Section codes reference
+CREATE TABLE section_codes_reference (
+    section_code VARCHAR(10) PRIMARY KEY,
+    form_type ENUM('24Q', '26Q', '27Q', '27EQ') NOT NULL,
+    description TEXT NOT NULL,
+    default_rate DECIMAL(5, 4),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Sample section codes data
+INSERT INTO section_codes_reference VALUES
+('94Q', '26Q', 'Payment for Purchase of Goods', 0.1000, TRUE),
+('192', '24Q', 'Salaries', 10.0000, TRUE),
+('194A', '26Q', 'Interest other than interest on securities', 10.0000, TRUE),
+('194C', '26Q', 'Contractors and Sub-contractors', 1.0000, TRUE),
+('194H', '26Q', 'Commission or Brokerage', 5.0000, TRUE),
+('194I', '26Q', 'Rent', 10.0000, TRUE),
+('194J', '26Q', 'Professional or Technical Services', 10.0000, TRUE);
+```
+
+---
+
+## TypeScript Data Generation Example
+
+```typescript
+interface FVUData {
+  fileHeader: FileHeader;
+  batchHeader: BatchHeader;
+  challans: ChallanWithDeductees[];
+}
+
+interface ChallanWithDeductees {
+  challan: ChallanDetail;
+  deductees: DeducteeDetail[];
+}
+
+function generateFVUContent(data: FVUData): string {
+  const lines: string[] = [];
+  let lineNumber = 1;
+  
+  // 1. File Header
+  lines.push(formatFileHeader(data.fileHeader, lineNumber++));
+  
+  // 2. Batch Header
+  lines.push(formatBatchHeader(data.batchHeader, lineNumber++));
+  
+  // 3. Challans and Deductees
+  for (const item of data.challans) {
+    lines.push(formatChallanDetail(item.challan, lineNumber++));
+    
+    for (const deductee of item.deductees) {
+      lines.push(formatDeducteeDetail(deductee, lineNumber++));
+    }
+  }
+  
+  return lines.join('\r\n') + '\r\n';
+}
+
+function formatFileHeader(fh: FileHeader, lineNum: number): string {
+  return [
+    lineNum,
+    'FH',
+    fh.fvuVersion || 'NS1',
+    fh.returnType,
+    formatDateDDMMYYYY(fh.fileCreationDate),
+    fh.fileNumber,
+    fh.deductorType,
+    fh.tan,
+    fh.totalBatches,
+    fh.softwareName,
+    ...Array(8).fill('')  // Reserved fields
+  ].join('^');
+}
+
+function formatBatchHeader(bh: BatchHeader, lineNum: number): string {
+  return [
+    lineNum,
+    'BH',
+    bh.batchNumber,
+    bh.serialNumber,
+    bh.formType,
+    ...Array(4).fill(''),  // Reserved
+    bh.panReferenceNumber || '',
+    ...Array(4).fill(''),  // Reserved
+    bh.tan,
+    '',  // Reserved
+    bh.deductorPan || '',
+    bh.assessmentYear,
+    bh.financialYear,
+    bh.quarter,
+    bh.deductorName,
+    bh.branchDivision || 'N/A',
+    bh.flatDoorBlock || '',
+    bh.nameOfPremises || '',
+    bh.roadStreet || '',
+    bh.areaLocality || '',
+    bh.townCity,
+    bh.stateCode,
+    bh.pinCode,
+    bh.email,
+    ...Array(3).fill(''),  // Reserved
+    bh.stdCode || 'N',
+    bh.responsiblePersonType || 'Q',
+    bh.responsiblePersonName,
+    bh.designation,
+    bh.rpFlatDoorBlock || '',
+    bh.rpNameOfPremises || '',
+    bh.rpRoadStreet || '',
+    bh.rpAreaLocality || '',
+    bh.rpTownCity,
+    bh.rpStateCode,
+    bh.rpPinCode,
+    bh.rpEmail,
+    bh.rpMobile,
+    ...Array(3).fill(''),  // Reserved
+    bh.declaration || 'N',
+    formatAmount(bh.totalAmountPaid),
+    ...Array(4).fill(''),  // Reserved
+    bh.nilChallanIndicator || 'N',
+    bh.lastReturnFiled || 'Y',
+    ...Array(7).fill(''),  // Reserved
+    bh.pan || '',
+    ...Array(13).fill('')  // Reserved
+  ].join('^');
+}
+
+function formatChallanDetail(cd: ChallanDetail, lineNum: number): string {
+  return [
+    lineNum,
+    'CD',
+    cd.batchNumber,
+    cd.challanSerialNumber,
+    cd.sectionSerialNumber,
+    cd.nilChallan || 'N',
+    ...Array(6).fill(''),  // Reserved
+    cd.bsrCodeOld || '',
+    ...Array(4).fill(''),  // Reserved
+    cd.bsrCode,
+    '',  // Reserved
+    formatDateDDMMYYYY(cd.challanDate),
+    ...Array(4).fill(''),  // Reserved
+    formatAmount(cd.taxDeposited),
+    formatAmount(cd.surcharge),
+    formatAmount(cd.educationCess),
+    formatAmount(cd.interest),
+    formatAmount(cd.others),
+    formatAmount(cd.totalAmount),
+    '',  // Reserved
+    formatAmount(cd.incomeTax || cd.taxDeposited),
+    formatAmount(cd.taxDeposited),
+    formatAmount(cd.surcharge),
+    formatAmount(cd.educationCess),
+    formatAmount(cd.taxDeposited),
+    formatAmount(cd.interest),
+    formatAmount(cd.fee),
+    ...Array(2).fill(''),  // Reserved
+    cd.minorHead || 'N',
+    ...Array(2).fill(''),  // Reserved
+    formatAmount(cd.tenderDate ? 1 : 0),
+    cd.natureOfPayment,
+    ''  // Reserved
+  ].join('^');
+}
+
+function formatDeducteeDetail(dd: DeducteeDetail, lineNum: number): string {
+  return [
+    lineNum,
+    'DD',
+    dd.batchNumber,
+    dd.challanSerialNumber,
+    dd.deducteeSerialNumber,
+    dd.deducteeStatus || 'O',
+    '',  // Reserved
+    dd.buyerSellerFlag || '2',
+    '',  // Reserved
+    dd.deducteePan || '',
+    ...Array(3).fill(''),  // Reserved
+    dd.deducteeName,
+    formatAmount(dd.amountPaid),
+    formatAmount(dd.amountCredited),
+    formatAmount(dd.tdsDeducted),
+    formatAmount(dd.totalAmount),
+    '',  // Reserved
+    formatAmount(dd.tdsDeposited),
+    ...Array(3).fill(''),  // Reserved
+    (dd.amountPaid * 100).toFixed(0),  // Amount in paisa
+    formatDateDDMMYYYY(dd.dateOfPayment),
+    formatDateDDMMYYYY(dd.dateOfDeduction),
+    '',  // Reserved
+    formatRate(dd.tdsRate),
+    ...Array(7).fill(''),  // Reserved
+    dd.sectionCode,
+    ...Array(23).fill('')  // Reserved
+  ].join('^');
+}
+
+// Helper functions
+function formatDateDDMMYYYY(date: Date): string {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}${month}${year}`;
+}
+
+function formatAmount(amount: number): string {
+  return amount.toFixed(2);
+}
+
+function formatRate(rate: number): string {
+  return rate.toFixed(4);
+}
+```
+
+---
+
+## Summary
+
+**Main Tables Required:**
+1. `file_headers` - FH record
+2. `batch_headers` - BH record (Deductor info)
+3. `challan_details` - CD record (Payment details)
+4. `deductee_details` - DD record (Individual deductee transactions)
+5. `tds_returns` - Master table linking everything
+6. `state_codes_reference` - State code lookup
+7. `section_codes_reference` - Section code lookup
+
+**Key Points:**
+- Each line starts with line number
+- Fields separated by `^` (caret)
+- Dates in DDMMYYYY format
+- Amounts with 2 decimal places
+- Many reserved fields (empty `^`)
+- One CD record can have multiple DD records
+- Section 94Q is for purchase of goods (0.10% TDS)

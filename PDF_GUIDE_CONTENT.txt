@@ -1,0 +1,461 @@
+
+================================================================================
+PAGE 1
+================================================================================
+TDS Return File Format
+Complete Implementation Guide
+ Field Separators  State Codes  Database Schema
+ 
+Topic
+Page
+Part 1: Field Separator Corrections
+2
+Part 2: Complete State Code Reference
+10
+Implementation Code Examples
+Throughout
+Compatible With:
+ Protean RPU 5.8
+ TRACES Portal 2025-26
+ Form 26Q, 27Q, 27EQ
+For: React TypeScript + MySQL Implementation
+
+================================================================================
+PAGE 2
+================================================================================
+PART 1
+Field Separator Correction Guide
+This section provides detailed instructions on correcting field separator issues in TDS return files. The
+document compares correct files from the official Protean RPU 5.8 tool with error files and explains how
+to fix structural problems.
+Understanding Field Separators
+Each caret symbol (^) acts as a field delimiter in the TDS file format. Multiple consecutive carets
+indicate empty fields. The exact number of separators is critical for proper file validation.
+Critical Errors Found
+Field
+Correct Format
+Error Format
+Issue
+Software Version
+Protean RPU 5.8
+FVU 9.3 INTEGRATED
+Wrong utility
+State Code
+31 (numeric)
+UT (text)
+Must be numeric
+Locality
+BHITARI BO
+(empty)
+Missing field
+Challan BSR
+08010, 17579, 58380
+(empty)
+Missing codes
+Amount Paise
+10096000.00
+1009600000.00
+× 100 extra
+PAN Delimiters
+3 carets (^^^)
+4 carets (^^^^)
+Extra delimiter
+
+================================================================================
+PAGE 3
+================================================================================
+Detailed Field Structure
+Line 1: File Header
+1^FH^NS1^R^28012026^1^D^ALDD03200B^1^Protean RPU 5.8^^^^^^^^
+After "Protean RPU 5.8": Exactly 8 carets (^^^^^^^^) representing 8 empty reserved fields.
+Line 2: Batch Header (Critical Section)
+Deductor Address Section
+^DEEPAK KUMAR JAISWAL^N/A^1^EKAWASPATTI^BHITARI BO^BHITARI TARAF SADUR^GHAZIPUR^31^233304^
+Position
+Field Name
+Example Value
+Notes
+1
+Name
+DEEPAK KUMAR JAISWAL
+Required
+2
+Designation
+N/A
+Required
+3
+Branch/Division
+1
+Required
+4
+Building/Premises
+EKAWASPATTI
+Optional
+5
+Locality
+BHITARI BO
+Must NOT be empty
+6
+Road/Street/Lane
+BHITARI TARAF SADUR
+Optional
+7
+Area/Location
+GHAZIPUR
+Required
+8
+State Code
+31
+Numeric (31 for UP)
+9
+PIN Code
+233304
+Required
+Lines 3, 5, 7: Challan Detail Records
+Correct Format
+3^CD^1^1^1^N^^^^^^08010^^^^0180002^^08112025^^^^10096.00^...
+Error Format
+3^CD^1^1^1^N^^^^^^^^^^^0180002^^05122025^^^^9139.00^...
+Correct Structure After 'N' Flag:
+ 6 carets (^^^^^^) - Reserved fields
+ BSR Code: 08010 (MUST have value)
+ 4 carets (^^^^) - Reserved fields
+ Section code: 0180002
+ 2 carets (^^) - Reserved
+ Date: 08112025 (DDMMYYYY)
+Fix: Replace 11 empty fields with ^^^^^^BSR_CODE^^^^
+
+================================================================================
+PAGE 4
+================================================================================
+Lines 4, 6, 8: Deductee Detail Records
+4^DD^1^1^1^O^^2^^AXFPJ5192A^^^ASHISH KUMAR JAISWAL^10096.00^...
+After PAN (CRITICAL):
+ PAN: AXFPJ5192A
+ Exactly 3 carets (^^^) [NOT 4]
+ Name: ASHISH KUMAR JAISWAL
+Amount Format:
+ Amount in paise = Amount × 100 (not × 10,000)
+ Example: ■10,096 → 10096000.00 paise
+
+================================================================================
+PAGE 5
+================================================================================
+Implementation Code
+def format_challan_detail(data):
+    reserved_6 = "^^^^^^"
+    bsr_code = data['bsr_code']  # MUST HAVE VALUE
+    reserved_4 = "^^^^"
+    section = "0180002"
+    reserved_2 = "^^"
+    date = data['date']
+    
+    return f"{reserved_6}{bsr_code}{reserved_4}{section}{reserved_2}{date}"
+def format_deductee_detail(data):
+    pan = data['pan']
+    reserved_3 = "^^^"  # Exactly 3, not 4
+    name = data['name']
+    amount_paise = data['amount'] * 100  # × 100 only
+    
+    return f"{pan}{reserved_3}{name}^{amount_paise:.2f}"
+Validation Checklist
+✓ State code is numeric (31 for UP, not "UT")
+✓ Locality field is not empty
+✓ BSR code has value in all challans
+✓ Exactly 3 carets after PAN
+✓ Amount in paise = Amount × 100
+✓ All mandatory fields populated
+✓ Test on TRACES before production
+
+================================================================================
+PAGE 6
+================================================================================
+PART 2
+Complete Indian State & UT Codes
+ For TDS Return Filing
+ 
+Critical: These numeric codes must be used in TDS return files. Text abbreviations (like "UP", "MH",
+"DL") will cause file rejection.
+States (29 States)
+State Name
+Code
+State Name
+Code
+Andhra Pradesh
+28
+Madhya Pradesh
+23
+Arunachal Pradesh
+12
+Maharashtra
+27
+Assam
+18
+Manipur
+14
+Bihar
+10
+Meghalaya
+17
+Chhattisgarh
+22
+Mizoram
+15
+Goa
+30
+Nagaland
+13
+Gujarat
+24
+Odisha
+21
+Haryana
+06
+Punjab
+03
+Himachal Pradesh
+02
+Rajasthan
+08
+Jharkhand
+20
+Sikkim
+11
+Karnataka
+29
+Tamil Nadu
+33
+Kerala
+32
+Telangana
+36
+Tripura
+16
+Uttar Pradesh
+31
+Uttarakhand
+05
+West Bengal
+19
+
+================================================================================
+PAGE 7
+================================================================================
+Union Territories (8 UTs)
+Union Territory Name
+Code
+Union Territory Name
+Code
+Andaman & Nicobar
+35
+Dadra & Nagar Haveli
+26
+Chandigarh
+04
+Lakshadweep
+31
+Delhi (NCT)
+07
+Puducherry
+34
+Jammu & Kashmir
+01
+Ladakh
+38
+Special Codes
+Category
+Code
+Description
+Outside India
+99
+For addresses outside India
+
+================================================================================
+PAGE 8
+================================================================================
+Common Mistakes - Must Avoid
+Wrong Input
+Error Type
+Correct Code
+State/UT Name
+UP
+Text abbreviation
+31
+Uttar Pradesh
+DL
+Text abbreviation
+07
+Delhi
+MH
+Text abbreviation
+27
+Maharashtra
+TN
+Text abbreviation
+33
+Tamil Nadu
+KA
+Text abbreviation
+29
+Karnataka
+GJ
+Text abbreviation
+24
+Gujarat
+RJ
+Text abbreviation
+08
+Rajasthan
+MP
+Text abbreviation
+23
+Madhya Pradesh
+WB
+Text abbreviation
+19
+West Bengal
+PB
+Text abbreviation
+03
+Punjab
+Top 20 Most Used State Codes
+State
+Code
+State
+Code
+Uttar Pradesh
+31
+Tamil Nadu
+33
+Maharashtra
+27
+West Bengal
+19
+Bihar
+10
+Madhya Pradesh
+23
+Karnataka
+29
+Rajasthan
+08
+Gujarat
+24
+Andhra Pradesh
+28
+Odisha
+21
+Telangana
+36
+Kerala
+32
+Assam
+18
+Punjab
+03
+Haryana
+06
+Chhattisgarh
+22
+Jharkhand
+20
+Delhi (NCT)
+07
+Uttarakhand
+05
+Implementation Guidelines
+
+================================================================================
+PAGE 9
+================================================================================
+1. Database Storage
+ Store state code as CHAR(2) in MySQL
+ Add constraint: CHECK (state_code REGEXP '^[0-9]{2}$')
+ Never store text abbreviations
+2. Frontend Validation
+ Use dropdown with numeric codes only
+ Display state name but submit numeric code
+ Validate before submission
+3. API Validation
+ Reject non-numeric state codes
+ Verify code exists in valid list
+ Return clear error messages
+4. File Generation
+ Always use stored numeric code
+ Never convert or transform the code
+ Validate entire file before generation
+Database Implementation
+-- Create state codes reference table
+CREATE TABLE state_codes (
+  code CHAR(2) PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  type ENUM('State', 'UT', 'Special')
+);
+-- Add constraint to deductors table
+ALTER TABLE deductors 
+ADD CONSTRAINT chk_state_code 
+CHECK (state_code REGEXP '^[0-9]{2}$');
+-- Validate existing data
+SELECT * FROM deductors 
+WHERE state_code NOT IN (SELECT code FROM state_codes);
+-- Fix common errors
+UPDATE deductors SET state_code = '31' WHERE state_code = 'UP';
+UPDATE deductors SET state_code = '07' WHERE state_code = 'DL';
+UPDATE deductors SET state_code = '27' WHERE state_code = 'MH';
+
+================================================================================
+PAGE 10
+================================================================================
+Quick Reference Summary
+Critical Rule
+Correct
+Wrong
+State Code Format
+31 (numeric)
+UP (text)
+Locality Field
+Must have value
+Empty or NULL
+BSR Code
+Must have value
+Empty or NULL
+PAN Separators
+^^^ (3 carets)
+^^^^ (4 carets)
+Amount Conversion
+× 100 to paise
+× 10,000
+File Header End
+^^^^^^^^ (8)
+Wrong count
+Challan BSR Pattern
+^^^^^^BSR^^^^
+Wrong pattern
+Pre-Production Testing Checklist
+■ All state codes are numeric in database
+■ No empty locality fields
+■ All challans have BSR codes
+■ Test file generated successfully
+■ File validated with Protean RPU tool
+■ Test upload on TRACES portal
+■ Compare with official sample files
+■ All amounts calculated correctly (× 100)
+■ Field separators verified manually
+■ Documentation updated for team
+ 
+ Document Version: 1.0
+Last Updated: January 2026
+ Compatible With: Protean RPU 5.8, TRACES Portal 2025-26
+For: React TypeScript + MySQL Implementation
+ 
+ Support Resources:
+  TRACES Portal: https://www.tdscpc.gov.in/
+ 
+================================================================================
+PAGE 11
+================================================================================
+ Protean e-Gov: https://www.proteantech.in/
+ Income Tax: https://www.incometax.gov.in/
+ 
+ Always verify with latest official documentation before production deployment.
+ 

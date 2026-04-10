@@ -1,0 +1,21 @@
+--- Starting CSI Validation Verification ---
+Time: 2026-02-10T13:44:48.245Z
+
+--- Test 1: Valid CSI File ---
+Result: PASSED
+Checks: ["TAN Validated: MOCK12345T found in CSI file.","Deductor Name Validated: 'MOCK COMPANY LTD' matched in CSI file.","Verified Challan: ₹1000 on 05052024","Verified Challan: ₹2000.5 on 05062024"]
+
+--- Test 2: Invalid Amount ---
+Result: PASSED (Correctly Failed)
+Errors: ["Challan Missing in CSI: Amount ₹1000.00, Date 05052024, BSR 0510308","Challan Missing in CSI: Amount ₹2000.50, Date 05062024, BSR 0510308"]
+
+--- Test 3: Invalid TAN ---
+Result: PASSED (Warning Found)
+Warnings: ["TAN Mismatch/Missing: Could not find TAN MOCK12345T in CSI file header."]
+
+--- Test 4: Invalid Name ---
+Result: FAILED (No Warning)
+Warnings: []
+
+--- Test 5: Date Formats (05-MAY-24) ---
+Result: PASSED

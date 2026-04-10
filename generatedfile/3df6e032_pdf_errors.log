@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-01-29T09:22:12.294Z",
+  "returnId": "3df6e032-bdcd-40dc-adb0-f0f34cf3f73c",
+  "deductorName": "DEEPAK KUMAR JAISWAL",
+  "tan": "ALDD03200B",
+  "financialYear": "2025-26",
+  "quarter": "Q3",
+  "formNo": "26Q",
+  "error": "unsupported number: NaN",
+  "stack": "Error: unsupported number: NaN\n    at number (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:160:11)\n    at PDFDocument._fragment (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:3463:45)\n    at PDFDocument._line (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:3342:10)\n    at LineWrapper.emit (node:events:520:35)\n    at emitLine (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:2913:12)\n    at LineWrapper.wrap (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:2985:7)\n    at PDFDocument._text (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:3084:15)\n    at PDFDocument.text (F:\\tds-pro-assistant\\node_modules\\pdfkit\\js\\pdfkit.js:3095:17)\n    at file:///F:/tds-pro-assistant/services/pdf_generator.js:105:47\n    at Array.forEach (<anonymous>)",
+  "details": "Error: unsupported number: NaN"
+}

@@ -1,0 +1,16 @@
+{
+  "returnId": "377dc36a-2753-4649-bad5-34b40b4f9c18",
+  "timestamp": "2026-01-29T14:01:26.826Z",
+  "checks": [
+    "✓ Return found: DEEPAK KUMAR JAISWAL (ALDD03200B)",
+    "✓ Receipt Reference Number valid: 770000348396204",
+    "✓ Deductor verified: DEEPAK KUMAR JAISWAL",
+    "✓ Challans found: 3",
+    "✓ Deductions found: 3",
+    "✓ Deductees configured: 1",
+    "✓ Deductee Deduction Links found: 1 deductees with deductions"
+  ],
+  "errors": [],
+  "warnings": [],
+  "isValid": true
+}

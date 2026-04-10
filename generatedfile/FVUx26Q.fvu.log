@@ -1,0 +1,17 @@
+amd64^Windows 11^10.0^^17.0.14+8-LTS-191^Cp1252
+Earlier FVU Version 8.1
+*******************************************
+Current FVU Version 8.2
+STARTING FORMAT VALIDATION
+The part added gets called returns true for value FVU 9.3 INTEGRATED
+BATCH VALIDATION STARTED
+countOfBatch1
+isFinYrGrtrthn:- true
+ PersonResponsilblePAN :: ARPPJ1400R
+PersonResponsilblePAN.trim().length() ::10
+The part added gets called returns true for value UT
+The part added gets called returns true for value UT
+................ 4
+................ 4
+END OF FORMAT VALIDATION
+END TIME : Wed Jan 28 12:49:40 IST 2026

@@ -1,0 +1,10 @@
+--- Starting Validation Logging Verification ---
+
+--- Test: Valid CSI File (Checking Log Insertion) ---
+PASSED: Log insertion query detected.
+Query SQL: INSERT INTO csi_validation_logs 
+                (id, return_id, status, total_challans, matched_challans, unmatched_challans, report_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+Query Params: ["602fef0b-3405-491e-b4ec-9fbc901ae465",1,"success",1,1,0,"{\"errors\":[],\"warnings\":[],\"checks\":[\"TAN Validated: MOCK12345T found in CSI file.\",\"Deductor Name Validated: 'MOCK COMPANY LTD' matched in CSI file.\",\"Verified Challan: ₹1000 on 05052024\"]}"]
+PASSED: Log parameters match expected values.
+PASSED: Report JSON contains checks.

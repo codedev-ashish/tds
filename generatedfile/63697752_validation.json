@@ -1,0 +1,16 @@
+{
+  "returnId": "63697752-0bbc-42d3-8054-1ff94ddc4e52",
+  "timestamp": "2026-02-10T12:49:30.751Z",
+  "checks": [
+    "✓ Return found: DEEPAK KUMAR JAISWAL (ALDD03200B)",
+    "✓ Deductor verified: DEEPAK KUMAR JAISWAL",
+    "✓ Deductions found: 1",
+    "✓ Deductees configured: 1",
+    "✓ Deductee Deduction Links found: 1 deductees with deductions"
+  ],
+  "errors": [],
+  "warnings": [
+    "No challans found - file may not generate properly"
+  ],
+  "isValid": true
+}
