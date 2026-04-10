@@ -1,4 +1,9 @@
 {
+	"name": "tds-pro-assistant",
+	"compatibility_date": "2026-04-10",
+	"assets": {
+		"directory": "./dist"
+	},
 	"d1_databases": [
 		{
 			"binding": "DB",
